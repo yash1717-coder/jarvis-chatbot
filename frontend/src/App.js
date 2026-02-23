@@ -1,9 +1,12 @@
 import React from 'react';
+import JarvisRobot from './components/JarvisRobot';
+import ChatBox from './components/ChatBox';
 
 function App() {
     return (
-        <div>
-            <h1>Welcome to Jarvis Chatbot</h1>
+        <div className="App">
+            <JarvisRobot />
+            <ChatBox />
         </div>
     );
 }

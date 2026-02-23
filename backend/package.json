@@ -1,0 +1,18 @@
+{
+  "name": "jarvis-chatbot",
+  "version": "1.0.0",
+  "description": "A chatbot built using Express and Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo 'Error: no test specified' && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "author": "yash1717-coder",
+  "license": "ISC"
+}

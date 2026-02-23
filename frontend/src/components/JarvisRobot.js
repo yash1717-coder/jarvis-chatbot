@@ -1,33 +1,62 @@
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-class JarvisRobot {
-    constructor() {
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.renderer = new THREE.WebGLRenderer();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(this.renderer.domElement);
+const JarvisRobot = () => {
+    const containerRef = useRef(null);
+    const sceneRef = useRef(null);
+    const cameraRef = useRef(null);
+    const rendererRef = useRef(null);
 
-        this.robot = this.createRobot();
-        this.scene.add(this.robot);
-        this.camera.position.z = 5;
+    useEffect(() => {
+        // Create scene
+        sceneRef.current = new THREE.Scene();
 
-        this.animate();
-    }
+        // Create camera
+        cameraRef.current = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraRef.current.position.z = 5;
 
-    createRobot() {
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        // Create renderer
+        rendererRef.current = new THREE.WebGLRenderer({ antialias: true });
+        rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+        containerRef.current.appendChild(rendererRef.current.domElement);
+
+        // Add a robot (simple cube as a placeholder)
+        const geometry = new THREE.BoxGeometry();
         const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         const robot = new THREE.Mesh(geometry, material);
-        return robot;
-    }
+        sceneRef.current.add(robot);
 
-    animate() {
-        requestAnimationFrame(() => this.animate());
-        this.robot.rotation.x += 0.01;
-        this.robot.rotation.y += 0.01;
-        this.renderer.render(this.scene, this.camera);
-    }
-}
+        // Animation loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+            robot.rotation.x += 0.01;
+            robot.rotation.y += 0.01;
+            rendererRef.current.render(sceneRef.current, cameraRef.current);
+        };
+        animate();
+
+        // Handle window resize
+        const handleResize = () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            cameraRef.current.aspect = width / height;
+            cameraRef.current.updateProjectionMatrix();
+            rendererRef.current.setSize(width, height);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            rendererRef.current.dispose();
+            sceneRef.current = null;
+            cameraRef.current = null;
+            rendererRef.current = null;
+        };
+    }, []);
+
+    return <div ref={containerRef} />;
+};
 
 export default JarvisRobot;

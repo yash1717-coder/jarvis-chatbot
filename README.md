@@ -11,4 +11,6 @@ pip install -r requirements.txt
 
 4. Run the chatbot
 
-python jarvis_ollama.py
+python jarvis_ollama.py 
+
+Further I will be adding the few more features like voice input and a output including the text replies . 
